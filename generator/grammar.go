@@ -93,8 +93,7 @@ func transformExpr(expr ast.Expression, symbols map[string]symbol) (rhs []symbol
 		rhs = append(rhs, s)
 		symbols[s.str] = s
 	case *ast.Epsilon:
-		rhs = append(rhs, epsilon)
-		symbols[epsilon.str] = epsilon
+		// ignore ε
 	}
 	return rhs
 }

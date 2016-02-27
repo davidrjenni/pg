@@ -100,15 +100,33 @@ var testGrammar2 = ast.Grammar([]*ast.Production{
 })
 
 func TestTransform(t *testing.T) {
-	g, err := transform(testGrammar)
-	if err != nil {
-		t.Fatalf("error: %v", err)
+	grammarTests := []struct {
+		grammar ast.Grammar
+		prods   int
+		symbols int
+	}{
+		{
+			grammar: testGrammar,
+			prods:   7,
+			symbols: 9,
+		},
+		{
+			grammar: testGrammar2,
+			prods:   9,
+			symbols: 11,
+		},
 	}
-	if len(g.prods) != 7 {
-		t.Errorf("got %d, want %d", len(g.prods), 7)
-	}
-	if len(g.symbols) != 9 {
-		t.Errorf("got %d, want %d", len(g.symbols), 9)
+	for _, test := range grammarTests {
+		g, err := transform(test.grammar)
+		if err != nil {
+			t.Fatalf("error: %v", err)
+		}
+		if len(g.prods) != test.prods {
+			t.Errorf("got %d, want %d", len(g.prods), test.prods)
+		}
+		if len(g.symbols) != test.symbols {
+			t.Errorf("got %d, want %d", len(g.symbols), test.symbols)
+		}
 	}
 }
 
