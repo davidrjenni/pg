@@ -52,7 +52,7 @@ func (g *generator) closure(items itemSet) itemSet {
 		if s, ok := g.symbolAfterDot(items[i]); ok && !s.term {
 			for j, p := range g.grammar.prods {
 				item := newItem(0, j)
-				if p.lhs.str == s.str && !items.contains(item) {
+				if p.lhs == s && !items.contains(item) {
 					items = append(items, item)
 				}
 			}
@@ -65,7 +65,7 @@ func (g *generator) closure(items itemSet) itemSet {
 func (g *generator) goTo(items itemSet, sym symbol) (res itemSet) {
 	for _, i := range items {
 		s, ok := g.symbolAfterDot(i)
-		if ok && s.str == sym.str {
+		if ok && s == sym {
 			res = append(res, newItem(i.dot+1, i.n))
 		}
 	}
