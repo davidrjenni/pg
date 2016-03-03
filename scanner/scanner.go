@@ -201,6 +201,10 @@ func (s *Scanner) Scan() (pos token.Pos, typ token.Type, lit string) {
 				typ = token.ARROW
 				lit = "->"
 			}
+		case '[':
+			typ = token.LBRACK
+		case ']':
+			typ = token.RBRACK
 		default:
 			// next reports unexpected BOMs - don't repeat
 			if ch != bom {

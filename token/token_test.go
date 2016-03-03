@@ -22,6 +22,8 @@ func TestTypeString(t *testing.T) {
 		{token.ARROW, "ARROW"},
 		{token.PERIOD, "PERIOD"},
 		{token.PIPE, "PIPE"},
+		{token.LBRACK, "LBRACK"},
+		{token.RBRACK, "RBRACK"},
 		{token.EPSILON, "EPSILON"},
 	}
 
@@ -44,6 +46,8 @@ func TestTypeIsLiteral(t *testing.T) {
 		{token.ARROW, false},
 		{token.PERIOD, false},
 		{token.PIPE, false},
+		{token.LBRACK, false},
+		{token.RBRACK, false},
 		{token.EPSILON, false},
 	}
 
@@ -66,6 +70,8 @@ func TestTypeIsOperator(t *testing.T) {
 		{token.ARROW, true},
 		{token.PERIOD, true},
 		{token.PIPE, true},
+		{token.LBRACK, true},
+		{token.RBRACK, true},
 		{token.EPSILON, false},
 	}
 

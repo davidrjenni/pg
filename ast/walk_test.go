@@ -34,6 +34,9 @@ func TestWalk(t *testing.T) {
 					&ast.Terminal{Terminal: ")"},
 				}),
 				&ast.Name{Name: "T"},
+				&ast.Option{
+					Expr: &ast.Terminal{Terminal: "1"},
+				},
 			}),
 		},
 	})
@@ -57,6 +60,8 @@ func TestWalk(t *testing.T) {
 		"*ast.Name",
 		"*ast.Terminal",
 		"*ast.Name",
+		"*ast.Option",
+		"*ast.Terminal",
 	}
 
 	i := 0
@@ -70,4 +75,8 @@ func TestWalk(t *testing.T) {
 		i++
 		return true
 	}, g)
+
+	if i != len(order) {
+		t.Errorf("got %d, want %d", i, len(order))
+	}
 }

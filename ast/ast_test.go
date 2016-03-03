@@ -17,6 +17,7 @@ func TestNodes(t *testing.T) {
 	var _ ast.Node = &ast.Production{}
 	var _ ast.Node = ast.Alternative{}
 	var _ ast.Node = ast.Sequence{}
+	var _ ast.Node = &ast.Option{}
 	var _ ast.Node = &ast.Name{}
 	var _ ast.Node = &ast.Terminal{}
 	var _ ast.Node = &ast.Epsilon{}
@@ -25,6 +26,7 @@ func TestNodes(t *testing.T) {
 func TestExpressions(t *testing.T) {
 	var _ ast.Expression = ast.Alternative{}
 	var _ ast.Expression = ast.Sequence{}
+	var _ ast.Expression = &ast.Option{}
 	var _ ast.Expression = &ast.Name{}
 	var _ ast.Expression = &ast.Terminal{}
 	var _ ast.Expression = &ast.Epsilon{}

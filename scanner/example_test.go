@@ -12,7 +12,7 @@ import (
 )
 
 func ExampleScanner_Scan() {
-	src := []byte(`E -> T "+" T | T | ε .`)
+	src := []byte(`E -> T "+" T | T | ε | [ "1" ] .`)
 	s := scanner.New(src, "example")
 
 	for {
@@ -33,5 +33,9 @@ func ExampleScanner_Scan() {
 	// example:1:16	IDENT	"T"
 	// example:1:18	PIPE	""
 	// example:1:20	EPSILON	"ε"
-	// example:1:23	PERIOD	""
+	// example:1:23	PIPE	""
+	// example:1:25	LBRACK	""
+	// example:1:27	STRING	"\"1\""
+	// example:1:31	RBRACK	""
+	// example:1:33	PERIOD	""
 }

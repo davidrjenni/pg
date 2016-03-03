@@ -31,6 +31,8 @@ func Walk(v Visitor, node Node) {
 		for _, e := range n {
 			Walk(v, e)
 		}
+	case *Option:
+		Walk(v, n.Expr)
 	}
 	v(nil)
 }

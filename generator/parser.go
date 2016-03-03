@@ -42,7 +42,10 @@ package generator
 
 const parserTmpl = `package main
 
-import "fmt"
+import (
+	"fmt"
+	"strings"
+)
 
 type pgElem struct {
 	sym   string
@@ -103,6 +106,13 @@ func pgParse() pgNode {
 			var rest []pgNode
 			for _, n := range tree[:len(tree)-c] {
 				rest = append(rest, n)
+			}
+			if strings.HasSuffix(name, "_opt") {
+				if len(tree) > 0 {
+					name = tree[len(tree)-1].typ
+				} else {
+					name = name[:len(name)-len("_opt")]
+				}
 			}
 			tree = append(rest, pgNode{typ: name, val: name, children: tree[len(tree)-c:]})
 		case 1: // Shift

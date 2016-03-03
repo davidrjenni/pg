@@ -36,6 +36,12 @@ type (
 	// Sequence represents a list of sequential expressions.
 	Sequence []Expression
 
+	// Option represents an optional expression.
+	Option struct {
+		Expr   Expression
+		Lbrack token.Pos
+	}
+
 	// Name represents a production name.
 	Name struct {
 		Name     string    // name of the production
@@ -59,6 +65,7 @@ func (g Grammar) Pos() token.Pos     { return g[0].Pos() }
 func (p *Production) Pos() token.Pos { return p.Name.Pos() }
 func (a Alternative) Pos() token.Pos { return a[0].Pos() }
 func (s Sequence) Pos() token.Pos    { return s[0].Pos() }
+func (o *Option) Pos() token.Pos     { return o.Lbrack }
 func (n *Name) Pos() token.Pos       { return n.StartPos }
 func (t *Terminal) Pos() token.Pos   { return t.QuotePos }
 func (e *Epsilon) Pos() token.Pos    { return e.Start }
@@ -67,6 +74,7 @@ func (Grammar) node()     {}
 func (Production) node()  {}
 func (Alternative) node() {}
 func (Sequence) node()    {}
+func (Option) node()      {}
 func (Name) node()        {}
 func (Terminal) node()    {}
 func (Epsilon) node()     {}
@@ -74,5 +82,6 @@ func (Epsilon) node()     {}
 func (Alternative) expr() {}
 func (Sequence) expr()    {}
 func (Name) expr()        {}
+func (Option) expr()      {}
 func (Terminal) expr()    {}
 func (Epsilon) expr()     {}

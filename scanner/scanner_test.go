@@ -30,6 +30,8 @@ func TestScan(t *testing.T) {
 		{token.ARROW, "->"},
 		{token.PERIOD, "."},
 		{token.PIPE, "|"},
+		{token.LBRACK, "["},
+		{token.RBRACK, "]"},
 		{token.EPSILON, "ε"},
 		{token.EPSILON, "e"},
 	}

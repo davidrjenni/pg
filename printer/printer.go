@@ -51,6 +51,8 @@ func expression(expr ast.Expression) []byte {
 		return alternative(e)
 	case ast.Sequence:
 		return sequence(e)
+	case *ast.Option:
+		return option(e)
 	case *ast.Name:
 		return name(e)
 	case *ast.Terminal:
@@ -81,6 +83,14 @@ func sequence(s ast.Sequence) []byte {
 		buf.Write(expression(e))
 		sep = " "
 	}
+	return buf.Bytes()
+}
+
+func option(o *ast.Option) []byte {
+	var buf bytes.Buffer
+	buf.WriteString("[ ")
+	buf.Write(expression(o.Expr))
+	buf.WriteString(" ]")
 	return buf.Bytes()
 }
 

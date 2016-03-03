@@ -53,6 +53,16 @@ func transform(g ast.Grammar) (grammar, error) {
 		return grammar{}, errors.New("grammar must not be empty")
 	}
 
+	for _, p := range g {
+		if opt, ok := p.Expr.(*ast.Option); ok {
+			name := &ast.Name{Name: p.Name.Name + "_opt"}
+			g = append([]*ast.Production{{Name: name, Expr: ast.Alternative([]ast.Expression{
+				&ast.Name{Name: p.Name.Name}, &ast.Epsilon{},
+			})}}, g...)
+			p.Expr = opt.Expr
+		}
+	}
+
 	start := prod{
 		lhs: symbol{str: g[0].Name.Name + "'", term: false, start: true},
 		rhs: []symbol{{str: g[0].Name.Name}},

@@ -95,7 +95,7 @@ func (p *parser) parseExpression() ast.Expression {
 	var alt ast.Alternative
 	for {
 		alt = append(alt, p.parseSequence())
-		if p.typ != token.PIPE {
+		if p.typ != token.PIPE && p.typ != token.RBRACK {
 			if p.typ != token.PERIOD {
 				p.errorf(p.pos, "production not terminated with .")
 			}
@@ -118,22 +118,37 @@ Loop:
 			seq = append(seq, &ast.Terminal{Terminal: p.lit[1 : len(p.lit)-1], QuotePos: p.pos})
 		case token.EPSILON:
 			seq = append(seq, &ast.Epsilon{Epsilon: p.lit, Start: p.pos})
-		case token.PIPE, token.PERIOD, token.EOF:
-			p.checkEmpty(p.pos, seq)
+		case token.PIPE, token.RBRACK, token.PERIOD, token.EOF:
+			if len(seq) == 0 {
+				p.errorf(p.pos, "expected an expression")
+			}
 			break Loop
+		case token.LBRACK:
+			lbrack := p.pos
+			expr := p.parseOption()
+			seq = append(seq, &ast.Option{Expr: expr, Lbrack: lbrack})
 		default:
 			p.errorf(p.pos, "unexpected %s", p.lit)
 		}
 	}
-	switch len(seq) {
-	case 1:
+	if len(seq) == 1 {
 		return seq[0]
 	}
 	return seq
 }
 
-func (p *parser) checkEmpty(pos token.Pos, s ast.Sequence) {
-	if len(s) == 0 {
-		p.errorf(pos, "expected an expression")
+func (p *parser) parseOption() ast.Expression {
+	var alt ast.Alternative
+	for {
+		alt = append(alt, p.parseSequence())
+		if p.typ != token.PIPE {
+			if p.typ != token.RBRACK {
+				p.errorf(p.pos, "option not terminated with ]")
+			}
+			if len(alt) == 1 {
+				return alt[0]
+			}
+			return alt
+		}
 	}
 }

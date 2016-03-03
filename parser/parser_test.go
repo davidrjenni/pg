@@ -38,7 +38,7 @@ func TestParseErrors(t *testing.T) {
 }
 
 func TestParse(t *testing.T) {
-	const src = `Start -> Expr.
+	const src = `Start -> [ Expr ] .
 Expr → Term "+" Expr | Term "-" Expr | Term | ε.
 Term → Factor "*" Term | Factor "/" Term | Factor .
 Factor → "(" Expr ")" | Number .
@@ -48,7 +48,7 @@ Digit → "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9" .`
 	expected := ast.Grammar([]*ast.Production{
 		{
 			Name: &ast.Name{Name: "Start"},
-			Expr: &ast.Name{Name: "Expr"},
+			Expr: &ast.Option{Expr: &ast.Name{Name: "Expr"}},
 		},
 		{
 			Name: &ast.Name{Name: "Expr"},
@@ -164,6 +164,12 @@ func checkExpr(t *testing.T, actual, expected ast.Expression) {
 		for i, e := range expr {
 			checkExpr(t, s[i], e)
 		}
+	case *ast.Option:
+		o, ok := actual.(*ast.Option)
+		if !ok {
+			t.Fatalf("got %T, want %T", actual, expr)
+		}
+		checkExpr(t, expr.Expr, o.Expr)
 	case *ast.Name:
 		n, ok := actual.(*ast.Name)
 		if !ok {

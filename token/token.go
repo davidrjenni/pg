@@ -26,6 +26,8 @@ const (
 	ARROW  // -> or →
 	PERIOD // .
 	PIPE   // |
+	LBRACK // [
+	RBRACK // ]
 	operatorEnd
 
 	// Keyword
@@ -42,6 +44,8 @@ var tokens = [...]string{
 	ARROW:  "ARROW",
 	PERIOD: "PERIOD",
 	PIPE:   "PIPE",
+	LBRACK: "LBRACK",
+	RBRACK: "RBRACK",
 
 	EPSILON: "EPSILON",
 }

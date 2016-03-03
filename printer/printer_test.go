@@ -13,7 +13,7 @@ import (
 )
 
 func TestFprint(t *testing.T) {
-	const expected = `Expr → Term "+" Expr | Term "-" Expr | Term | ε .
+	const expected = `Expr → [ Term "+" Expr | Term "-" Expr | Term | ε ] .
 Term → Factor "*" Term | Factor "/" Term | Factor .
 Factor → "(" Expr ")" | Number .
 Number → Digit | Digit Number .
@@ -22,20 +22,22 @@ Digit → "0" | "1" | "2" | "3" | "4" | "5" | "6" | "7" | "8" | "9" .`
 	g := ast.Grammar([]*ast.Production{
 		{
 			Name: &ast.Name{Name: "Expr"},
-			Expr: ast.Alternative([]ast.Expression{
-				ast.Sequence([]ast.Expression{
+			Expr: &ast.Option{
+				Expr: ast.Alternative([]ast.Expression{
+					ast.Sequence([]ast.Expression{
+						&ast.Name{Name: "Term"},
+						&ast.Terminal{Terminal: "+"},
+						&ast.Name{Name: "Expr"},
+					}),
+					ast.Sequence([]ast.Expression{
+						&ast.Name{Name: "Term"},
+						&ast.Terminal{Terminal: "-"},
+						&ast.Name{Name: "Expr"},
+					}),
 					&ast.Name{Name: "Term"},
-					&ast.Terminal{Terminal: "+"},
-					&ast.Name{Name: "Expr"},
+					&ast.Epsilon{Epsilon: "e"},
 				}),
-				ast.Sequence([]ast.Expression{
-					&ast.Name{Name: "Term"},
-					&ast.Terminal{Terminal: "-"},
-					&ast.Name{Name: "Expr"},
-				}),
-				&ast.Name{Name: "Term"},
-				&ast.Epsilon{Epsilon: "e"},
-			}),
+			},
 		},
 		{
 			Name: &ast.Name{Name: "Term"},
