@@ -6,6 +6,7 @@
 pg is tool for managing context-free grammars.
 
 pg offers the following commands:
+	fmt	format grammar
 	gen	generate parser
 
 "pg gen" converts a context-free grammar in Backus-Naur Form (BNF)
@@ -22,6 +23,12 @@ grammar rules, using "pgLex() (string, string)" to obtain the input and
 pgLex and pgError can be found in package github.com/davidrjenni/pg/generator.
 
 The package github.com/davidrjenni/pg/example contains working examples.
+
+"pg fmt" formats a context-free grammar. The input must satisfy the
+grammar specified in package github.com/davidrjenni/pg.
+
+The option is
+	-w	Write to file (instead of stdout)
 */
 package main
 
@@ -31,6 +38,7 @@ import (
 )
 
 var commands = map[string]func(args []string){
+	"fmt": format,
 	"gen": gen,
 }
 
