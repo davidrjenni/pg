@@ -15,7 +15,7 @@ import (
 	"strconv"
 )
 
-//go:generate pg -f grammar -o parser.go
+//go:generate pg gen -o parser.go grammar
 
 var l = &lexer{}
 

@@ -3,14 +3,16 @@
 // license that can be found in the LICENSE file.
 
 /*
-pg is a toy SLR parser generator.
+pg is tool for managing context-free grammars.
 
-pg converts a context-free grammar in Backus-Naur Form (BNF) into
-parse tables for an SLR(1) parser. The input must satisfy the
+pg offers the following commands:
+	gen	generate parser
+
+"pg gen" converts a context-free grammar in Backus-Naur Form (BNF)
+into parse tables for an SLR(1) parser. The input must satisfy the
 grammar specified in package github.com/davidrjenni/pg.
 
-The options are
-	-f input	Input file containing the grammar
+The option is
 	-o output	Direct output to the specified file instead of out.go
 
 The output file contains the parse tables and the function
@@ -24,49 +26,29 @@ The package github.com/davidrjenni/pg/example contains working examples.
 package main
 
 import (
-	"flag"
-	"io/ioutil"
 	"log"
 	"os"
-
-	"github.com/davidrjenni/pg/generator"
-	"github.com/davidrjenni/pg/parser"
 )
 
-func main() {
-	in := flag.String("f", "", "input file")
-	out := flag.String("o", "out.go", "output file")
+var commands = map[string]func(args []string){
+	"gen": gen,
+}
 
+func main() {
 	log.SetPrefix("pg: ")
 	log.SetFlags(0)
 
-	flag.Parse()
-	if *in == "" {
-		flag.Usage()
-		os.Exit(2)
+	if len(os.Args) < 2 {
+		log.SetPrefix("")
+		log.Fatal(`Usage: pg <command> [arguments]
+Commands:
+	gen	generate parser
+`)
 	}
 
-	f, err := os.Open(*in)
-	if err != nil {
-		log.Fatalf("cannot open file: %v", err)
+	cmd, ok := commands[os.Args[1]]
+	if !ok {
+		log.Fatalf("unknown command %q", os.Args[1])
 	}
-	defer f.Close()
-
-	src, err := ioutil.ReadAll(f)
-	if err != nil {
-		log.Fatalf("cannot read file: %v", err)
-	}
-
-	g, err := parser.Parse(src, *in)
-	if err != nil {
-		log.Fatalf(err.Error())
-	}
-
-	buf, err := generator.GenerateSLR(g)
-	if err != nil {
-		log.Fatalf(err.Error())
-	}
-	if err = ioutil.WriteFile(*out, buf, 0644); err != nil {
-		log.Fatalf("cannot write file: %v", err)
-	}
+	cmd(os.Args[2:])
 }
