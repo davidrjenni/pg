@@ -69,6 +69,7 @@ func Parse(src []byte, filename string) (ast.Grammar, error) {
 		p.errorf(pos, "syntax error: %s", msg)
 	}
 	p.parse()
+	p.check()
 	return p.grammar, p.errs.err()
 }
 
@@ -136,4 +137,22 @@ func (p *parser) checkEmpty(pos token.Pos, s ast.Sequence) {
 	if len(s) == 0 {
 		p.errorf(pos, "expected an expression")
 	}
+}
+
+// check checks whether all productions
+// used are defined.
+func (p *parser) check() {
+	prods := make(map[string]bool)
+	for _, p := range p.grammar {
+		prods[p.Name.Name] = true
+	}
+
+	ast.Walk(func(n ast.Node) bool {
+		if n, ok := n.(*ast.Name); ok {
+			if _, ok := prods[n.Name]; !ok {
+				p.errs = append(p.errs, fmt.Errorf("%v undefined %q", n.Pos(), n.Name))
+			}
+		}
+		return true
+	}, p.grammar)
 }
