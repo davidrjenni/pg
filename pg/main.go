@@ -8,6 +8,7 @@ pg is tool for managing context-free grammars.
 pg offers the following commands:
 	fmt	format grammar
 	gen	generate parser
+	web	start web app
 
 "pg gen" converts a context-free grammar in Backus-Naur Form (BNF)
 into parse tables for an SLR(1) parser. The input must satisfy the
@@ -40,6 +41,7 @@ import (
 var commands = map[string]func(args []string){
 	"fmt": format,
 	"gen": gen,
+	"web": web,
 }
 
 func main() {
