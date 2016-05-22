@@ -84,5 +84,4 @@ func pgParse() pgNode {
 			typ, tok = pgLex()
 		}
 	}
-	return tree[0]
 }
