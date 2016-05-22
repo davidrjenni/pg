@@ -35,7 +35,7 @@ pgError, which is called if an error occurs while
 parsing.
 
 	// pgError is called if an error
-	// occured while parsing.
+	// occurred while parsing.
 	pgError(err error)
 */
 package generator

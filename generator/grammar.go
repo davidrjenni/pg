@@ -44,7 +44,7 @@ type prod struct {
 // Alternatives are rewritten by adding new productions for each
 // alternative. These productions have the same name and one
 // choice of the alternative expression as their right hand side.
-// tranform also adds a start symbol.
+// transform also adds a start symbol.
 func transform(g ast.Grammar) (grammar, error) {
 	var prods []prod
 	symbols := make(map[string]symbol)
