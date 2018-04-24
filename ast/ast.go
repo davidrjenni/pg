@@ -55,13 +55,26 @@ type (
 	}
 )
 
-func (g Grammar) Pos() token.Pos     { return g[0].Pos() }
+// Pos returns the position of the first character of the expression.
+func (g Grammar) Pos() token.Pos { return g[0].Pos() }
+
+// Pos returns the position of the first character of the expression.
 func (p *Production) Pos() token.Pos { return p.Name.Pos() }
+
+// Pos returns the position of the first character of the expression.
 func (a Alternative) Pos() token.Pos { return a[0].Pos() }
-func (s Sequence) Pos() token.Pos    { return s[0].Pos() }
-func (n *Name) Pos() token.Pos       { return n.StartPos }
-func (t *Terminal) Pos() token.Pos   { return t.QuotePos }
-func (e *Epsilon) Pos() token.Pos    { return e.Start }
+
+// Pos returns the position of the first character of the expression.
+func (s Sequence) Pos() token.Pos { return s[0].Pos() }
+
+// Pos returns the position of the first character of the expression.
+func (n *Name) Pos() token.Pos { return n.StartPos }
+
+// Pos returns the position of the first character of the expression.
+func (t *Terminal) Pos() token.Pos { return t.QuotePos }
+
+// Pos returns the position of the first character of the expression.
+func (e *Epsilon) Pos() token.Pos { return e.Start }
 
 func (Grammar) node()     {}
 func (Production) node()  {}

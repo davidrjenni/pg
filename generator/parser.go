@@ -3,7 +3,7 @@
 // license that can be found in the LICENSE file.
 
 /*
-The generated parser provides the function pgParse:
+Package generator generates a parser which provides the function pgParse:
 
 	// pgParse returns an AST node.
 	func pgParse() pgNode

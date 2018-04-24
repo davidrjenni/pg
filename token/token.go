@@ -10,18 +10,22 @@ import "strconv"
 // Type is the set of lexical tokens of pg.
 type Type int
 
+// Token constants
 const (
 	// Special tokens
+
 	ILLEGAL Type = iota
 	EOF
 
 	// Identifiers and literals
+
 	literalBeg
 	IDENT  // Foo
 	STRING // "abc"
 	literalEnd
 
 	// Operators and delimiters
+
 	operatorBeg
 	ARROW  // -> or →
 	PERIOD // .
@@ -29,6 +33,7 @@ const (
 	operatorEnd
 
 	// Keyword
+
 	EPSILON // e or ε
 )
 
