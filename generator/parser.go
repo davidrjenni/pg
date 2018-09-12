@@ -100,10 +100,8 @@ func pgParse() pgNode {
 			s = stack.top()
 			stack.push(pgElem{sym: name})
 			stack.push(pgElem{state: table[name][s.state][1]})
-			var rest []pgNode
-			for _, n := range tree[:len(tree)-c] {
-				rest = append(rest, n)
-			}
+			rest := make([]pgNode, len(tree)-c)
+			copy(rest, tree[:len(tree)-c])
 			tree = append(rest, pgNode{typ: name, val: name, children: tree[len(tree)-c:]})
 		case 1: // Shift
 			stack.push(pgElem{sym: tok})
